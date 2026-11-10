@@ -56,7 +56,6 @@ export default function App() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [generatedTicketUrl, setGeneratedTicketUrl] = useState<string | null>(null);
   const [ticketDetails, setTicketDetails] = useState<TicketData | null>(null);
-  const [remainingPasses, setRemainingPasses] = useState(38);
   const [copiedLink, setCopiedLink] = useState(false);
 
   // Audio effect toggle (gentle synthetic tone or silent)
@@ -166,7 +165,6 @@ export default function App() {
       setTicketDetails(data);
       setGeneratedTicketUrl(ticketUrl);
       setIsSuccess(true);
-      setRemainingPasses((prev) => Math.max(1, prev - 1));
 
       triggerConfetti();
       playSuccessSound();
@@ -213,19 +211,12 @@ export default function App() {
       {/* Background sparks */}
       <BackgroundSparks />
 
-      {/* Top micro bar */}
-      <header className="w-full max-w-lg flex items-center justify-between mb-6 z-10 px-2">
-        <div className="flex items-center gap-2 bg-zinc-900/80 border border-zinc-800 rounded-full py-1 px-3.5 backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-[#FF7900] animate-ping" />
-          <span className="text-xs font-semibold text-zinc-300">
-            {remainingPasses} places VIP restantes
-          </span>
-        </div>
-
+      {/* Top bar with audio toggle */}
+      <header className="w-full max-w-[480px] flex items-center justify-end mb-4 z-10 px-2">
         <button
           type="button"
           onClick={() => setSoundEnabled(!soundEnabled)}
-          className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-900/80 border border-zinc-800 rounded-full py-1 px-2.5 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-900/80 border border-zinc-800 rounded-full py-1 px-2.5 transition-colors cursor-pointer"
           title={soundEnabled ? 'Désactiver le son' : 'Activer le son'}
         >
           {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-[#FF7900]" /> : <VolumeX className="w-3.5 h-3.5 text-zinc-500" />}
@@ -288,7 +279,6 @@ export default function App() {
                           setNom(e.target.value);
                           if (errors.nom) setErrors({ ...errors, nom: undefined });
                         }}
-                        placeholder="SELABOY"
                         autoComplete="family-name"
                         className="w-full bg-transparent border-none outline-none px-3.5 py-3 text-sm text-white placeholder:text-zinc-600 font-medium"
                       />
@@ -310,7 +300,6 @@ export default function App() {
                           setPrenom(e.target.value);
                           if (errors.prenom) setErrors({ ...errors, prenom: undefined });
                         }}
-                        placeholder="Eric"
                         autoComplete="given-name"
                         className="w-full bg-transparent border-none outline-none px-3.5 py-3 text-sm text-white placeholder:text-zinc-600 font-medium"
                       />
