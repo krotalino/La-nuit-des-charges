@@ -40,8 +40,7 @@ export default function App() {
   const [prenom, setPrenom] = useState('');
   const [prefix, setPrefix] = useState('+237');
   const [numero, setNumero] = useState('');
-  const [ville, setVille] = useState('Douala');
-  const [isEditingVille, setIsEditingVille] = useState(false);
+  const ville = 'Douala';
   const [showCountrySelector, setShowCountrySelector] = useState(false);
 
   // Form errors
@@ -440,37 +439,22 @@ export default function App() {
                   {errors.numero && <span className="text-[12px] text-[#ff5a5a] font-semibold">{errors.numero}</span>}
                 </div>
 
-                {/* Champ Ville avec mode verrouillé / modifiable comme l'original */}
+                {/* Champ Ville - Fixé sur Douala uniquement */}
                 <div className="flex flex-col gap-1.5">
-                  <div className="flex items-center justify-between">
-                    <label htmlFor="ville" className="text-[11px] font-bold tracking-[0.09em] uppercase text-white">
-                      Ville
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => setIsEditingVille(!isEditingVille)}
-                      className="text-[12.5px] text-[#FF7900] hover:underline font-bold transition-colors cursor-pointer"
-                    >
-                      {isEditingVille ? 'Verrouiller' : 'Modifier'}
-                    </button>
+                  <label htmlFor="ville" className="text-[11px] font-bold tracking-[0.09em] uppercase text-white">
+                    Ville
+                  </label>
+                  <div className="flex items-center border border-white/12 rounded-[10px] bg-[#0f0f0f]">
+                    <input
+                      id="ville"
+                      name="ville"
+                      type="text"
+                      value={ville}
+                      readOnly
+                      tabIndex={-1}
+                      className="w-full bg-transparent border-none outline-none px-3.5 py-3 text-[15px] font-medium text-white/90 cursor-default select-none"
+                    />
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 flex items-center border border-white/12 focus-within:border-[#FF7900] focus-within:ring-2 focus-within:ring-[#FF7900]/25 rounded-[10px] bg-[#0f0f0f]">
-                      <input
-                        id="ville"
-                        name="ville"
-                        type="text"
-                        value={ville}
-                        onChange={(e) => setVille(e.target.value)}
-                        readOnly={!isEditingVille}
-                        className={`w-full bg-transparent border-none outline-none px-3.5 py-3 text-[15px] font-medium ${
-                          !isEditingVille ? 'text-[#9a9a9a] cursor-default' : 'text-white'
-                        }`}
-                      />
-                    </div>
-                  </div>
-                  {errors.ville && <span className="text-[12px] text-[#ff5a5a] font-semibold">{errors.ville}</span>}
                 </div>
 
                 {/* Bouton d'action CTA */}
