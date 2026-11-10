@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "Registration": {
+      "title": "Registration",
+      "description": "An event registration RSVP record containing attendee contact details and VIP pass info",
+      "type": "object",
+      "properties": {
+        "nom": {
+          "type": "string",
+          "description": "Family name of attendee",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "prenom": {
+          "type": "string",
+          "description": "First name of attendee",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "telephone": {
+          "type": "string",
+          "description": "WhatsApp phone number with country code",
+          "minLength": 6,
+          "maxLength": 30
+        },
+        "ville": {
+          "type": "string",
+          "description": "City of attendee",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "passId": {
+          "type": "string",
+          "description": "Unique VIP Pass identifier code",
+          "minLength": 5,
+          "maxLength": 50
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of registration submission",
+          "maxLength": 40
+        }
+      },
+      "required": ["nom", "prenom", "telephone", "ville", "passId"]
+    }
+  },
+  "firestore": {
+    "/registrations/{registrationId}": {
+      "schema": "Registration",
+      "description": "Event RSVPs submitted by guests via the online registration form"
+    }
+  }
+}
