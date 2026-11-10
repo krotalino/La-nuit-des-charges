@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+:root {
+  --black: #000000;
+  --bg: #0b0b0b;
+  --surface: #141414;
+  --surface-subtle: #1a1a1a;
+  --line: rgba(255, 255, 255, 0.12);
+  --orange: #FF7900;
+  --orange-light: #ff9433;
+  --orange-glow: rgba(255, 121, 0, 0.35);
+  --white: #ffffff;
+  --muted: #9a9a9a;
+  --wa: #25D366;
+  --err: #ff5a5a;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(65% 50% at 50% -5%, rgba(255, 121, 0, 0.28), transparent 70%),
+    radial-gradient(75% 60% at 50% 110%, rgba(255, 121, 0, 0.18), transparent 65%),
+    radial-gradient(40% 30% at 90% 40%, rgba(255, 121, 0, 0.08), transparent 60%);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Floating ambient party sparks */
+@keyframes sparkFall {
+  0% {
+    transform: translateY(-5vh) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65;
+  }
+  85% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 2px;
+  animation: sparkFall linear infinite;
+}
+
+/* Notched ticket perforation */
+.ticket-perf {
+  position: relative;
+  height: 0;
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.2);
+  margin: 0;
+}
+
+.ticket-perf::before,
+.ticket-perf::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--bg);
+  box-shadow: inset 0 0 0 3px #ff7900;
+  z-index: 5;
+}
+
+.ticket-perf::before {
+  left: -14px;
+}
+
+.ticket-perf::after {
+  right: -14px;
+}
+
+/* Custom glow animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 121, 0, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 121, 0, 0.45);
+  }
+}
+
+.ticket-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes popStamp {
+  0% {
+    transform: scale(0) rotate(-15deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.stamp-pop {
+  animation: popStamp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Shimmer scanline effect on VIP ticket */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.hologram-shimmer {
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 121, 0, 0.15) 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 121, 0, 0.15) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 6s infinite linear;
+}

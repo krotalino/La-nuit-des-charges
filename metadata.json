@@ -1,0 +1,8 @@
+{
+  "name": "La Nuit des Chargés — Réservation Pass VIP",
+  "description": "Plateforme officielle de réservation du Pass VIP pour La Nuit des Chargés. Es-tu prêt à être CHARGÉ ? Réserve ton Pass VIP exclusif.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
