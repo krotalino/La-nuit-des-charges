@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Check, 
   Download, 
   Share2, 
-  MapPin, 
-  ShieldCheck, 
-  ArrowRight, 
-  Smartphone, 
   RotateCcw,
   Volume2,
   VolumeX,
-  Users,
   Eye,
   FileText
 } from 'lucide-react';
@@ -60,10 +55,47 @@ export default function App() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
-  // Test Firestore connection on boot
+  // Test Firestore connection on boot & register discreet admin triggers
   useEffect(() => {
     testFirestoreConnection();
+
+    // Open if URL has ?admin=1 or #admin
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('admin') === '1' || params.get('admin') === 'true' || window.location.hash === '#admin') {
+      setIsAdminOpen(true);
+    }
+
+    const handleHash = () => {
+      if (window.location.hash === '#admin') setIsAdminOpen(true);
+    };
+
+    // Keyboard shortcut: Ctrl + Shift + A or Cmd + Shift + A
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setIsAdminOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHash);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('hashchange', handleHash);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
+
+  const copyrightClicksRef = useRef<number>(0);
+  const handleCopyrightClick = () => {
+    copyrightClicksRef.current += 1;
+    if (copyrightClicksRef.current >= 3) {
+      setIsAdminOpen(true);
+      copyrightClicksRef.current = 0;
+    }
+    setTimeout(() => {
+      copyrightClicksRef.current = 0;
+    }, 1500);
+  };
 
   // Audio effect toggle (gentle synthetic tone or silent)
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -224,18 +256,8 @@ export default function App() {
       {/* Background sparks */}
       <BackgroundSparks />
 
-      {/* Top bar with audio toggle & organizer link */}
-      <header className="w-full max-w-[460px] flex items-center justify-between mb-4 z-10 px-1">
-        <button
-          type="button"
-          onClick={() => setIsAdminOpen(true)}
-          className="flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 hover:border-[#FF7900]/50 rounded-full py-1 px-3 transition-colors cursor-pointer"
-          title="Consulter la liste des inscrits et numéros de téléphone"
-        >
-          <Users className="w-3.5 h-3.5 text-[#FF7900]" />
-          <span className="font-semibold">Espace Organisateur</span>
-        </button>
-
+      {/* Top bar with audio toggle */}
+      <header className="w-full max-w-[460px] flex items-center justify-end mb-4 z-10 px-1">
         <button
           type="button"
           onClick={() => setSoundEnabled(!soundEnabled)}
@@ -604,15 +626,10 @@ export default function App() {
 
         {/* Footer */}
         <footer className="text-center py-6 text-zinc-400 text-xs">
-          <p>© 2026 La Nuit des Chargés • Plateforme officielle de réservation.</p>
-          <button
-            type="button"
-            onClick={() => setIsAdminOpen(true)}
-            className="text-[#FF7900] hover:text-[#ff9433] hover:underline font-bold text-xs mt-2 transition-colors cursor-pointer inline-flex items-center gap-1"
-          >
-            <span>📊 Espace Organisateur — Consulter les inscrits & numéros</span>
-          </button>
-          <p className="mt-2 text-[11px] text-zinc-500">
+          <p onClick={handleCopyrightClick} className="select-none cursor-default">
+            © 2026 La Nuit des Chargés • Plateforme officielle de réservation.
+          </p>
+          <p className="mt-1 text-[11px] text-zinc-500">
             L'abus d'alcool est dangereux pour la santé. Événement réservé aux personnes majeures.
           </p>
         </footer>
